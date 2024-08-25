@@ -1,0 +1,39 @@
+name: Workflow for CD Deployment on vercel with github action
+
+on:
+    release:
+        types: [published]
+    workflow_dispatch: # tigger the workflow manually
+
+          
+
+env:
+    
+    #These secrects key must be created on the github repository
+     #Go to your github repositiory - go to settings-selct Actions
+     #secrets -Create
+    
+    VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID}} # Get to your vercel dashboard go to the settings and copy team ID
+    VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID}} # Get to your vercel dashboard select project copy the ID
+    VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }} #find token: Go to your vrecel dashboard - clik on user profil - go to account settings - choose settings on top corner left - scroll down create new Token - created a secret on github 
+
+jobs:
+    Deploy: 
+        name: Deploy after a release or a manual trigger to vercel
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Install Vercel Cli
+              run: npm install --global vercel@latest
+
+            - name: Pull vercel environment information
+              run: vercel pull --yes --environment=production --token=${{env.VERCEL_TOKEN}} 
+
+            - name: Build Project Artifact
+              run: vercel build --prod --token=${{env.VERCEL_TOKEN}}
+
+            - name: Deploy Project Artifact to Vercel
+              run: vercel deploy --prebuild --prod --token=${{env.VERCEL_TOKEN}}

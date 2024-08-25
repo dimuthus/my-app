@@ -3,7 +3,7 @@ name: Workflow for CI with github actions
 on:
     push:
         branches:
-            - master
+            - main
 
 env:
     baseUrl: http://localhost:3000

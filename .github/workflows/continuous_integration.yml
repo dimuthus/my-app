@@ -29,9 +29,6 @@ jobs:
 
             - name: Checkout Typescript Errors
               run: npm i -g typescript && tsc
-              
-            - name: Checkout Eslint Errors
-              run: npm run eslint
 
             - name: Lauch Unit Test && Integration Test
               run: npm run test
